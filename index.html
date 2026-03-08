@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToolsbyRudy</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/LOGO.png">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        primary: { 50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd', 400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a' },
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        [v-cloak] { display: none; }
+        .glass {
+            background: rgba(255, 255, 255, 0.99);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .dark .glass {
+            background: rgba(15, 23, 42, 0.99);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .fade-slide-enter-active, .fade-slide-leave-active { transition: all 0.2s ease-out; }
+        .fade-slide-enter, .fade-slide-leave-to { opacity: 0; transform: translateY(10px); }
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob { animation: blob 7s infinite; }
+        .animation-delay-2000 { animation-delay: 2s; }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
+
+    <div id="app" v-cloak :class="{ 'dark': isDarkMode }">
+        <div class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans">
+            
+            <nav class="sticky top-0 z-50 glass dark:glass border-b border-slate-200 dark:border-slate-800">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between h-16 items-center">
+                        <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='index.html'">
+                            <div class="flex items-center justify-center overflow-hidden rounded-lg">
+                                <img src="LOGO.png" alt="ToolsbyRudy Logo" class="w-9 h-9 object-contain">
+                            </div>
+                            <span class="text-xl font-extrabold tracking-tight">Toolsby<span class="text-primary-600">Rudy</span></span>
+                        </div>
+
+                        <div class="hidden md:flex space-x-8 h-full items-center">
+                            <div class="relative group h-full flex items-center" 
+                                 @mouseenter="isQrDropdownOpen = true" 
+                                 @mouseleave="isQrDropdownOpen = false">
+                                
+                                <button class="flex items-center gap-1 hover:text-primary-600 transition-colors font-semibold py-4">
+                                    QR Codes
+                                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200" :class="{'rotate-180': isQrDropdownOpen}"></i>
+                                </button>
+                                
+                                <transition name="fade-slide">
+                                    <div v-show="isQrDropdownOpen" 
+                                         class="absolute top-[64px] left-0 w-80 glass border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl py-3 z-50 overflow-hidden">
+                                        
+                                        <a href="qrcode.html" class="flex items-center gap-4 px-4 py-3 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors group/item">
+                                            <div class="p-2 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl group-hover/item:scale-110 transition-transform">
+                                                <i data-lucide="plus-circle" class="w-5 h-5"></i>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-bold">QR Code Generator</div>
+                                                <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-tight mt-0.5">Create custom single codes for any data.</p>
+                                            </div>
+                                        </a>
+
+                                        <a href="bulk.html" class="flex items-center gap-4 px-4 py-3 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors group/item">
+                                            <div class="p-2 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-xl group-hover/item:scale-110 transition-transform">
+                                                <i data-lucide="layers" class="w-5 h-5"></i>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-bold">Bulk QR Generator</div>
+                                                <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-tight mt-0.5">Generate hundreds of codes via CSV.</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </transition>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <button @click="toggleTheme" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-all">
+                                <i v-if="isDarkMode" data-lucide="sun" class="w-5 h-5 text-yellow-400"></i>
+                                <i v-else data-lucide="moon" class="w-5 h-5 text-slate-600"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <header class="relative pt-16 pb-12 overflow-hidden">
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 opacity-30 dark:opacity-20">
+                    <div class="absolute top-0 left-1/4 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
+                    <div class="absolute top-0 right-1/4 w-72 h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
+                </div>
+
+                <div class="max-w-4xl mx-auto text-center px-4">
+                    <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
+                        Every tool you need for <span class="gradient-text">QR Codes</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-slate-600 dark:text-slate-400 mb-10 leading-relaxed max-w-2xl mx-auto">
+                        Create, manage, and track QR codes in seconds. Beautifully simple, incredibly powerful, and completely free to start.
+                    </p>
+                </div>
+            </header>
+
+            <main class="max-w-7xl mx-auto px-4 pb-24">
+                <div class="mb-12">
+                    <div class="flex items-center gap-3 mb-8">
+                        <div class="h-8 w-1.5 bg-primary-600 rounded-full"></div>
+                        <h2 class="text-2xl font-bold">QR Code Solutions</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <a href="qrcode.html" class="group relative block bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 card-hover transition-all duration-300 cursor-pointer shadow-sm">
+                            <div class="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                                <i data-lucide="plus-circle" class="w-8 h-8"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3">QR Code Generator</h3>
+                            <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-6">
+                                Create custom QR codes for URLs, WiFi, VCards, and more with unique colors and logos.
+                            </p>
+                            <div class="flex items-center text-primary-600 font-semibold text-sm">
+                                Try for FREE <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i>
+                            </div>
+                            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <span class="bg-primary-100 dark:bg-primary-900/40 text-primary-600 dark:text-primary-400 text-[10px] uppercase font-bold px-2 py-1 rounded">Popular</span>
+                            </div>
+                        </a>
+
+                        <a href="bulk.html" class="group relative block bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 card-hover transition-all duration-300 cursor-pointer shadow-sm">
+                            <div class="w-14 h-14 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                                <i data-lucide="layers" class="w-8 h-8"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3">Bulk QR Generator</h3>
+                            <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-6">
+                                Generate hundreds of QR codes instantly. Perfect for inventory or events.
+                            </p>
+                            <div class="flex items-center text-primary-600 font-semibold text-sm">
+                                Try for FREE <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i>
+                            </div>
+                            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <span class="bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400 text-[10px] uppercase font-bold px-2 py-1 rounded">Pro</span>
+                            </div>
+                        </a>
+
+                        <div class="bg-slate-100/50 dark:bg-slate-900/30 p-8 rounded-3xl border-2 border-dashed border-slate-300 dark:border-slate-800 flex flex-col items-center justify-center text-center opacity-60">
+                            <div class="w-12 h-12 bg-slate-200 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
+                                <i data-lucide="lock" class="w-5 h-5 text-slate-400"></i>
+                            </div>
+                            <p class="font-medium text-slate-400">More coming soon</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-12">
+                <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div class="flex items-center gap-3">
+                        <img src="LOGO.png" alt="Logo" class="w-5 h-5 object-contain">
+                        <span class="font-bold">ToolsbyRudy</span>
+                    </div>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm">
+                        © 2026 ToolsbyRudy. The premium standard for QR code management.
+                    </p>
+                    <div class="flex gap-6 text-slate-400">
+                        <!-- <i data-lucide="twitter" class="w-5 h-5 hover:text-primary-600 cursor-pointer transition-colors"></i>
+                        <i data-lucide="github" class="w-5 h-5 hover:text-primary-600 cursor-pointer transition-colors"></i> -->
+                        <a href="https://www.linkedin.com/in/rudrakshgupta18/"><i data-lucide="linkedin" class="w-5 h-5 hover:text-primary-600 cursor-pointer transition-colors"></i></a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                isDarkMode: false,
+                isQrDropdownOpen: false
+            },
+            created() {
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    this.isDarkMode = true;
+                }
+            },
+            mounted() { this.refreshIcons(); },
+            methods: {
+                toggleTheme() {
+                    this.isDarkMode = !this.isDarkMode;
+                    localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
+                    this.$nextTick(() => this.refreshIcons());
+                },
+                refreshIcons() { lucide.createIcons(); }
+            },
+            watch: {
+                isDarkMode() { this.$nextTick(() => this.refreshIcons()); },
+                isQrDropdownOpen() { this.$nextTick(() => this.refreshIcons()); }
+            }
+        });
+    </script>
+</body>
+</html>
